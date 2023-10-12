@@ -14,7 +14,17 @@ lint:
 refactor: format lint
 deploy:
 	# deploy goes here
+
 run:
-	chmod +x ./main.py &&\
-		./main.py
+	uvicorn main:app --reload
+
+migrations:
+	alembic revision -m "initial"
+	alembic upgrade head
+
+push:
+	git add .
+	git commit -m "update"
+	git push
+
 all: install lint test format deploy
