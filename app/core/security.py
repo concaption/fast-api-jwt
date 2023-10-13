@@ -4,12 +4,11 @@ path: app/core/security.py
 """
 from datetime import datetime, timedelta
 from fastapi import HTTPException, Depends
-from passlib.context import CryptContext
 from fastapi.security import OAuth2PasswordBearer
+from passlib.context import CryptContext
 from starlette.authentication import AuthCredentials, UnauthenticatedUser
 from jose import jwt, JWTError
 from app.core.database import get_db
-from app.schemas.token import Token
 from app.models.user import UserModel
 from app.core.config import settings
 
@@ -56,7 +55,7 @@ async def decode_token(token: str):
         return jwt.decode(token, settings.SECRET_KEY, algorithms=[settings.ALGORITHM])
     except JWTError:
         return None
-    
+
 async def get_current_user(token: str = Depends(oauth2_scheme), db = None):
     """
     Get current user
@@ -79,7 +78,7 @@ class JWTAuthentication():
     """
     def __init__(self):
         self.realm = "Authentication required"
-    
+
     async def authenticate(self, request):
         """
         Authenticate
@@ -94,7 +93,7 @@ class JWTAuthentication():
             return guest
         try:
             user = await get_current_user(token)
-        except:
+        except: # noqa
             print("failed at geting user")
             return guest
         return AuthCredentials(["authenticated"]), user
