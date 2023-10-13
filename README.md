@@ -8,7 +8,7 @@
 
 <div align="center">
 
-a minimal cli that takes screenshot of the given url
+a minimal backend that implements jwt in FastAPI
 
 step 1: open in a codespace
 
